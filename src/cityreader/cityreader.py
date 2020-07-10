@@ -28,6 +28,7 @@ def cityreader(cities=[]):
   
     with open("cities.csv", "r") as csvfile:
         csv_reader = csv.reader(csvfile)
+        next(csv_reader)
         for row in csv_reader:
             cities.append(City(row[0], row[3], row[4]))
         return cities
@@ -69,14 +70,44 @@ for c in cities:
 # Salt Lake City: (40.7774,-111.9301)
 
 # TODO Get latitude and longitude values from the user
-
+trying_to_find = True
 
 def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
     # within will hold the cities that fall within the specified region
     within = []
+    with open("cities.csv", "r") as csvfile:
+        csv_reader = csv.reader(csvfile)
+        for row in csv_reader:
+            if float(row[3]) > lat1 and float(row[4]) > lon1 and float(row[3]) < lat2 and float(row[4]) < lon2:
+                within.append(City(row[0], row[3], row[4]))
+            else:
+              pass
+
+
 
     # TODO Ensure that the lat and lon valuse are all floats
     # Go through each city and check to see if it falls within
     # the specified coordinates.
 
     return within
+
+while trying_to_find: 
+  lat_lon1 = input("[lat1min] [lon1min] [lat2max] [lon2max]: ")
+  lat_lon_splitter = lat_lon1.split(" ")
+  lat1 = int(lat_lon_splitter[0])
+  lon1 = int(lat_lon_splitter[1])
+  lat2 = int(lat_lon_splitter[2])
+  lon2 = int(lat_lon_splitter[3])
+
+  # try:
+  if type(lat1) == int and type(lon1) == int and type(lat2) == int and type(lon2) == int:
+      print("valid numbers and the right amount")
+      cityreader_stretch(lat1,lon1,lat2,lon2, cities)
+
+  elif len(lat_lon_splitter) == 1:
+      print("need to put spaces between the numbers")
+  # except ValueError: 
+  #     print("you need to enter valid numbers")
+
+  
+
